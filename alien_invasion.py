@@ -2,6 +2,9 @@ import sys
 
 import pygame
 
+from settings import Settings
+from ship import Ship
+
 class AlienInvasion:
 	"""Overall class to manage game assets and behaviour."""
 
@@ -10,8 +13,13 @@ class AlienInvasion:
 
 		pygame.init()  # initializes the background settings that Pygame needs to work properly
 
-		self.screen = pygame.display.set_mode((1200, 800))  # create a display window, on which we’ll draw all the game’s graphical elements. 1200 pixels wide by 800 pixels high
+		self.settings = Settings()
+
+		self.screen = pygame.display.set_mode(
+			(self.settings.screen_width, self.settings.screen_height))  # create a display window, on which we’ll draw all the game’s graphical elements. 1200 pixels wide by 800 pixels high
 		pygame.display.set_caption("Alien Invasion")
+
+		self.ship = Ship(self) # Make an instance of Ship after the screen has been created - only one argument, the current instance of AlienInvation.
 
 		# Set the background colour
 		self.bg_color = (230, 230, 230) # equal mixture of RGB - produces light grey colour
@@ -26,7 +34,8 @@ class AlienInvasion:
 					sys.exit()
 
 			# Redraw the screen during each pass through the loop.
-			self.screen.fill(self.bg_color)	# Fill the screen with the background colour using the fill() method	
+			self.screen.fill(self.settings.bg_color)	# Fill the screen with the background colour using the fill() method
+			self.ship.blitme() # Draw the ship on the screen so it appears on top of the background	
 
 			# Make the most recently drawn screen visible. pygame.display.flip() continually updates the display to show the new positions 
 			# of game elements and hides the old ones, creating the illusion of smooth movement.
